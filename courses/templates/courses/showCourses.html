@@ -1,0 +1,70 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Courses{% endblock title %}
+{% block main %}
+
+<div class="main-form container">
+    <div class="col-md-9 m-auto">
+        <div class="card card-body">
+          <img src="{{course.image.url}}" height="300px" class="w-100">
+          <h3>{{course.description}}</h3>
+          <h5><span> Instructor :- </span>{{ course.instructor }}</h5>
+          <h6><strong><span> ₹ </span></strong>{{ course.fees }}</h6>
+          <div class="card-footer d-flex">
+            <button class="btn btn-success m-auto" id="checkout-button">Purchase</button>
+          </div>
+          <input type="hidden" name="email" id="email" value="{{user.email}}">
+          <input type="hidden" name="user" id="user" value="{{user}}">
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript">
+    // Create an instance of the Stripe object with your publishable API key
+    var stripe = Stripe('{{ stripe_publishable_key }}');
+
+    var checkoutButton = document.getElementById('checkout-button');
+
+    checkoutButton.addEventListener('click', function () {
+    
+
+        var email = document.getElementById('email').value;
+        var user = document.getElementById('user').value;
+        if (email.length == 0) {
+            alert("Please enter your email address.");
+            return;
+        }
+
+        // Create a new Checkout Session using the server-side endpoint you
+        // created in step 3.
+        fetch("{% url 'api_checkout_session' id=course.id %}", {
+            method: 'POST',
+            body: JSON.stringify(
+                { email: email,
+                  user: user }
+            )
+        })
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (session) {
+                return stripe.redirectToCheckout({ sessionId: session.sessionId });
+            })
+            .then(function (result) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, you should display the localized error message to your
+                // customer using `error.message`.
+                if (result.error) {
+                    alert(result.error.message);
+                }
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+    });
+</script>
+
+{% endblock main %}

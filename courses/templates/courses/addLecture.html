@@ -1,0 +1,54 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Add Lecture{% endblock title %}
+{% block main %}
+
+<div class="main-form container">
+  <h1>Add Lectures for Courses</h1>
+
+  <form action = "{% url "addlecture" %}" method = "post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="instructor">Instructor :- </label>
+        <select class="form-control" id="instructor" name="{{form.instructor.name}}">
+          {% for i in form.instructor %}
+            <option value="{{i.id}}">{{i}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="course">Course :- </label>
+        <select class="form-control" id="course" name="{{form.course.name}}">
+          {% for c in form.course %}
+            <option value="{{c.id}}">{{c}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="title">Title :-</label>
+        <input type="text" class="form-control" name="{{form.title.name}}" id="title"
+          placeholder="Title"/>
+      </div>
+      <div class="form-group">
+        <label for="duration">Duration :-</label>
+        <input type="number" class="form-control" name="{{form.duration.name}}" id="duration"
+          placeholder="Time in minutes"/>
+      </div>
+      <div class="form-group">
+        <label for="lecture">Lecture :-</label>
+        <input type="file" class="form-control" name="{{form.lecture.name}}" id="lecture"/>
+      </div>
+      <input type = "submit", value = "Add Lecture" class="btn btn-primary">
+  </form>
+
+  {% if messages %}
+
+  {% for message in messages %}
+  <div class="alert alert-info">
+      {{ message }}
+  </div>
+  {% endfor %}
+
+{% endif %}
+</div>
+{% endblock main %}

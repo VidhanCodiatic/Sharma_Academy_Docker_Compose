@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+</head>
+<body>
+    <form action="{% url "show-quiz" %}" method="post">
+        {% csrf_token %}
+        {% if questions %}
+            {{ formset.management_form }}
+                {% for q in questions %}
+                    <p>{{ q }}</p>
+                    {% for form in formset %}
+                        {% if forloop.counter == forloop.parentloop.counter %}
+                            {% comment %} <input type='hidden' name="user" value="{{ user }}"/>
+                           {{ form.content }}
+                           {{ form.question }} {% endcomment %}
+                            {{form.as_p}}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                <br>
+                <input type="submit" value="Submit">
+            {% comment %} {% for q in assesment.question_set.all %}
+                <p>{{ q.question }}</p>
+                {% for form in formset %}
+                    {% if forloop.counter == forloop.parentloop.counter %}
+                        {{form.as_p}}
+                    {% endif %}
+                {% endfor %}
+                <br>
+                <input type="submit" value="Submit">
+            {% endfor %} {% endcomment %}
+        {% else %}
+            <h1>No Questions Available if you are instructor please add questions first.</h1>
+        {% endif %}
+    </form>
+</body>
+</html>

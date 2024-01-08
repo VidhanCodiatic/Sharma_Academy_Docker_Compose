@@ -1,0 +1,73 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Quiz{% endblock title %}
+{% block main %}
+
+<div class="main container">
+    <form action="{% url "show-quiz" assessment.id %}" method="post" id = "test">
+        {% csrf_token %}
+        <div class="text-end"> Time left = <span id="timer">{{assessment.duration}}</span></div>
+        {% if questions %}
+            {% for q in questions %}
+                <p>{{ q.question }}</p>
+                {% for c in q.choice_set.all %}
+                    <input type="radio" name = "q_{{ q.id }}" value="{{ c.id }}">{{ c.option }}<br>
+                {% endfor %}
+                <br>
+            {% endfor %}
+            <input type="submit" value="Submit" class="btn btn-primary">
+        {% else %}
+        <div class="main-form container">
+            <h1 id="contain">No Questions Available if you are instructor please add questions first.</h1>
+        {% endif %}
+        </div>
+    </form>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+</div>
+
+<script>
+startTimer();
+
+function startTimer() {
+  var presentTime = document.getElementById('timer').innerHTML;
+  var timeArray = presentTime.split(/[:]+/);
+  var h = timeArray[0];
+  var m = timeArray[1];
+
+  var s = checkSecond((timeArray[2] - 1));
+
+  if(s == 59){
+    m = m - 1
+  }
+  if(m == 0 & s == 0) {
+    h = h-1;
+    m = 60
+  }
+  if(h < 0){
+    document.getElementById('test').submit()
+    return
+  }
+  
+  document.getElementById('timer').innerHTML =
+   h + ":" + m + ":" + s;
+  setTimeout(startTimer, 1000);
+
+}
+
+function checkSecond(sec) {
+  if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+  if (sec < 0) {sec = "59"};
+  return sec;
+}
+</script>
+
+{% endblock main %}
+

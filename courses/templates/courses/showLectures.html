@@ -1,0 +1,75 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Lecture{% endblock title %}
+{% block main %}
+
+<div class="main container">
+    {% if videoLecture %}
+        <h1>Lectures</h1>
+        {% for i in video_page_obj %}
+            <div class = "border">
+                <video controls="controls" preload="preload">
+                    <source src="{{i.lecture.url}}" type="video/mp4">
+                </video><br>
+                <h3> <span>Title :-</span> {{i.title}}</h3>
+                <h5> <span>Course :-</span> {{i.course}}</h5>
+                <p> <span>Duration :-</span> {{i.duration}}</p>
+            </div>
+        {% endfor %}
+
+        <div class="container p-4">
+            <div class="pagination justify-content-center">
+              <span class="step-links">
+                {% if video_page_obj.has_previous %}
+                <a href="?page=1" class="btn btn-primary">&laquo; first</a>
+                <a href="?page={{ video_page_obj.previous_page_number }}" class="btn btn-primary">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ video_page_obj.number }} of {{ video_page_obj.paginator.num_pages }}
+                </span>
+        
+                {% if video_page_obj.has_next %}
+                <a href="?page={{ video_page_obj.next_page_number }}" class="btn btn-primary">next</a>
+                <a href="?page={{ video_page_obj.paginator.num_pages }}" class="btn btn-primary">last &raquo;</a>
+                {% endif %}
+              </span>
+            </div>
+        </div>
+        
+
+    {% else %}
+    <p>No videos yet</p>
+    {% endif %}
+
+
+    <h1>Embed video</h1>
+    <br>
+    {% for e in embedLecture %}
+        <iframe width="560" height="315" src="{{e.url}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe><br>
+        <h3> <span>Title :-</span> {{e.title}}</h3>
+        <h5> <span>Course :-</span> {{e.course}}</h5>
+        <p> <span>Duration :-</span> {{e.duration}}</p>
+    {% endfor %}
+
+    <hr>
+    <h1>Document Links</h1>
+
+    {% for d in document %}
+        <h3> <span>Title :-</span> {{d.title}}</h3>
+        <h5> <span>Course :-</span> {{d.course}}</h5>
+        <span>Link :- </span><a href="{{d.url}}">{{d.url}}</a><br>
+    {% endfor %}
+
+    <hr>
+    <h1>Course Pdf</h1>
+
+    {% for f in files %}
+        <h3> <span>Title :- </span>{{f.title}}</h3>
+        <h5> <span>Course :- </span>{{f.course}}</h5>
+        <a href="{{f.pdfFile.url}}">Open PDF</a><br>
+        <br>
+    {% endfor %}
+</div>
+
+{% endblock main %}

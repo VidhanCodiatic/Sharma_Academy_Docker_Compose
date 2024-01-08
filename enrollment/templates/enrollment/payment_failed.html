@@ -1,0 +1,13 @@
+{% extends 'users/base.html' %}
+
+{% block main %}
+<div class="container">
+    <div class="jumbotron text-center mt-5">
+        <h1 class="text-danger">Payment Failed</h1>
+        <p>We received your order. You can now close this window or use the
+            link below to visit
+            {% comment %} <a href="{% url 'home' %}">home page</a>. {% endcomment %}
+        </p>
+    </div>
+</div>
+{% endblock main %}

@@ -1,0 +1,225 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Index{% endblock title %}
+{% block main %}
+
+{% if messages %}
+
+  {% for message in messages %}
+  <div class="alert alert-info">
+      {{ message }}
+  </div>
+  {% endfor %}
+
+{% endif %}
+
+  <!-- Hero Section -->
+  <section id="hero" class="clearfix">
+    <div class="container" data-aos="fade-up">
+
+      <div class="hero-img" data-aos="zoom-out" data-aos-delay="200">
+        <img src="{% static "users/img/hero-img.svg" %}" alt="" class="img-fluid">
+      </div>
+
+      <div class="hero-info" data-aos="zoom-in" data-aos-delay="100">
+        <h2>We provide<br><span>solution</span><br>of your problems!</h2>
+        <div>
+          {% comment %} <a type="button" class="btn-get-started" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+            Enroll
+          </a> {% endcomment %}
+          <!-- Button trigger modal -->
+          <a type="button" class="btn-services" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Courses
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+<!-- services section start here -->
+
+<div class="container section">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="section-head">About us</h2>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="service-box">
+            <i class="fa fa-anchor"></i>
+            <h3>Some heading</h3>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Inventore, dolorum?</p>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="service-box">
+            <i class="fa fa-bar-chart"></i>
+            <h3>Some heading</h3>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Inventore, dolorum?</p>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="service-box">
+            <i class="fa fa-diamond"></i>
+            <h3>Some heading</h3>
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Inventore, dolorum?</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- services section ends here -->
+
+
+<!-- Modal for Enrollment -->
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Enroll here</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% comment %} <form action="{% url "" %}" method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <select class="form-select" aria-label="Default select example" name = "{{enroll_form.enrollment_for.name}}">
+              <option selected>Select your email</option>
+              {% for u in users %}
+              <option value="{{u.id}}">{{u}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <input type="submit" value = "Enroll" class="btn btn-primary">
+        </form> {% endcomment %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal for Assessment -->
+<div class="modal fade" id="staticBackdropAssessment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Assessment Available</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Type</th>
+              <th scope="col">Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in assessments %}
+            <tr>
+              <td><a href="{% url "show-quiz" i.id %}">{{i.title}}</a></td>
+              <td>{{i.type}}</td>
+              <td>{{i.duration}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal for Courses -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Courses Available</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Duration</th>
+              <th scope="col">Fees</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in courses %}
+            <tr>
+              <td>{{i.name}}</td>
+              <td>{{i.duration}}</td>
+              <td>{{i.fees}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% comment %} multiple items carousal {% endcomment %}
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+{% if user.type == 'student' %}
+  {% if courses %}
+  <div id="myCarousel" class="carousel slide container" data-bs-ride="carousel">
+    <div class="carousel-inner w-100">
+      {% for i in courses %}
+      <div class="carousel-item{% if forloop.first %} active{% endif %}">
+        <div class="col-md-3">
+          <div class="card card-body">
+            <img src="{{i.image.url}}" height="200px" class="w-100">
+            <h3>{{i.description}}</h3>
+            <h6><strong><span> ₹ </span></strong>{{ i.fees }}</h6>
+            <a href="{% url "buycourse" i.id %}" class="btn btn-primary">Buy</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <br>
+
+  {% else %}
+  <h1>No Course Available</h1>
+
+  {% endif %}
+{% endif %}
+
+
+
+{% endblock main %}
